@@ -2,7 +2,7 @@
 import {ref, watch} from "vue";
 
 const props = defineProps(['product']);
-const emit = defineEmits(['add']);
+// const emit = defineEmits(['add']);
 let countProduct=ref(0);
 const endProduct=ref(false);
 if(props.product.count === 0){
@@ -25,9 +25,12 @@ function DeIncrease(){
         countProduct.value--;
     }
 }
+
+import {useProductStore} from "@/stores/productStores.js";
+const productStore = useProductStore();
 function addProduct(id){
     let  products=countProduct.value
-    emit('add',id,products);
+    productStore.addProductToBasket(id,products);
     countProduct.value = 0;
 }
 

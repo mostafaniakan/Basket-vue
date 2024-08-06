@@ -1,28 +1,37 @@
 <script setup>
-const props = defineProps(['itemsBasket']);
-const emit = defineEmits(['delete','IncreaseBasket','DecreaseBasket']);
-function deleteProduct(id){
-    emit('delete',id);
-}
-function Increase(id){
-    emit('IncreaseBasket',id)
-}
-function DeIncrease(id) {
-    emit('DecreaseBasket',id)
-}
-console.log(props.itemsBasket)
+import {onMounted, watch} from "vue";
+
+// const props = defineProps(['itemsBasket']);
+// const emit = defineEmits(['delete','IncreaseBasket','DecreaseBasket']);
+// function deleteProduct(id){
+//     emit('delete',id);
+// }
+// function Increase(id){
+//     emit('IncreaseBasket',id)
+// }
+// function DeIncrease(id) {
+//     emit('DecreaseBasket',id)
+// }
+
+import {useProductStore} from "@/stores/productStores.js";
+const productStore = useProductStore();
+const DeIncreaseBasket = productStore.DeIncreaseBasket;
+const IncreaseBasket = productStore.IncreaseBasket;
+const deleteProductFromBasket = productStore.deleteProductFromBasket;
+const Basket = productStore.Basket
+
 </script>
 
 <template>
-<tr>
-    <td>{{props.itemsBasket.name}}</td>
-    <td>{{props.itemsBasket.price}}$</td>
+<tr  v-for="itemsBasket in Basket " :key="itemsBasket.id">
+    <td>{{itemsBasket.name}}</td>
+    <td>{{itemsBasket.price}}$</td>
     <td>
-        <button @click="DeIncrease(props.itemsBasket.id)">-</button>
-        <span>{{props.itemsBasket.count}}</span>
-        <button @click="Increase(props.itemsBasket.id)">+</button>
+        <button @click="DeIncreaseBasket(itemsBasket.id)">-</button>
+        <span>{{itemsBasket.count}}</span>
+        <button @click="IncreaseBasket(itemsBasket.id)">+</button>
     </td>
-    <td><button @click="deleteProduct(props.itemsBasket.id)" class="delete" >Delete</button></td>
+    <td><button @click="deleteProductFromBasket(itemsBasket.id)" class="delete" >Delete</button></td>
 </tr>
 </template>
 
